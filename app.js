@@ -18,12 +18,14 @@ app.use(bodyParser.json())
 
 
 //Подключение
-// models
-require('./models/user.model');
+// // models
+// require('./models/user.model');
 
 
 // routes
-require('./routes/api.routes');
+var apiRoutes = require('./routes/api.routes');
+
+app.use('/api', apiRoutes);
 
 
 
