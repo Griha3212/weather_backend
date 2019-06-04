@@ -3,9 +3,12 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var cors = require('cors');
+// var session = require('express-session');
+
 
 var app = express();
-
+app.use(cors());
 
 //Использование парсера для тела запроса
 // parse application/x-www-form-urlencoded
@@ -14,8 +17,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-
-
+//подключение сессий
+// app.use(session({
+//   secret: 'work hard',
+//   resave: true,
+//   saveUninitialized: false
+// }));
 
 //Подключение
 // // models
@@ -30,7 +37,24 @@ app.use('/api', apiRoutes);
 
 
 
+// app.get('/users', function (req, res) {
+//   User.find({}, function (err, users) {
+//     if (err) return res.status(500).send({
+//       message: 'Error'
+//     })
+//     // saved!
+//     res.status(200).send(users)
+//   });
+// });
+
+
 //Примеры запросов
+
+
+
+
+
+
 
 
 // app.get('/', function (req, res) {

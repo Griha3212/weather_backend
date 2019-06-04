@@ -4,12 +4,78 @@ const userService = require('../services/users.service');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 //функции логина и регистрации контроллера
-const login = (req, res) => {
-    console.log('login');
-    res.status(200).send({
-        message: 'login'
+
+
+
+
+const login =  async (email, password, callback) => {
+    User.findOne({ email: email })
+    .exec(function (err, user) {
+      if (err) {
+        return callback(err)
+      } else if (!user) {
+        var err = new Error('User not found.');
+        err.status = 401;
+        return callback(err);
+      }
+      bcrypt.compare(password, user.password, function (err, result) {
+        if (result === true) {
+          return callback(null, user);
+        } else {
+          return callback();
+        }
+      })
     });
+  
+  
+  
+    // try {
+    //     const users = await userService.getUsers({});
+    //     res.status(200).send(users)
+    // } catch (err) {
+    //     res.status(500).send(err)
+    // }
+    // User.find({}, function (err, users) {
+    //         if (err) return res.status(500).send({
+    //           message: 'Error'
+    //         })
+    //         res.status(200).send(users)
+    //       });
 }
+
+// login = (req, res) => {
+//     console.log('login');
+//     res.status(200).send({
+//         message: 'login'
+//     });
+// }
+
+const CheckAllUsers =  async (req, res) => {
+    try {
+        const users = await userService.getUsers({});
+        res.status(200).send(users)
+    } catch (err) {
+        res.status(500).send(err)
+    }
+    // User.find({}, function (err, users) {
+    //         if (err) return res.status(500).send({
+    //           message: 'Error'
+    //         })
+    //         res.status(200).send(users)
+    //       });
+
+}
+
+
+// app.get('/users', function (req, res) {
+//   User.find({}, function (err, users) {
+//     if (err) return res.status(500).send({
+//       message: 'Error'
+//     })
+//     // saved!
+//     res.status(200).send(users)
+//   });
+// });
 
 const register = async (req, res) => {
     console.log('register', req.body)
@@ -64,5 +130,6 @@ const register = async (req, res) => {
 
 module.exports = {
     login,
-    register
+    register,
+    CheckAllUsers
 }
