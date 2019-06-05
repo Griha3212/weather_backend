@@ -13,6 +13,22 @@ const getUsers = (param) => {
     })
 }
 
+
+const getUser = (param) => {
+
+    return new Promise((resolve, reject) => {
+        User.findOne(param, function(err, user) {
+            if (err) {
+                reject(err);
+            } else  {
+                resolve(user)
+            }
+        }) 
+    })
+
+
+}
+
 const createUser = (param) => {
     return new Promise((resolve, reject) => {
         User.create(param, function(err, user) {
@@ -29,5 +45,6 @@ const createUser = (param) => {
 
 module.exports = {
     getUsers,
+    getUser,
     createUser
 }

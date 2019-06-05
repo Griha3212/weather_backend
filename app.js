@@ -4,6 +4,9 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+
+
+
 // var session = require('express-session');
 
 
@@ -46,6 +49,7 @@ app.use('/api', apiRoutes);
 //     res.status(200).send(users)
 //   });
 // });
+
 
 
 //Примеры запросов
