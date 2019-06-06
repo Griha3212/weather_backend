@@ -4,6 +4,8 @@ const userService = require('../services/users.service');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
+
+const Constants = require('../config/constants')
 //функции логина и регистрации контроллера
 
 
@@ -59,18 +61,31 @@ const login = async (req, res) => {
         });
         //Если запись с таким email существует
 
+        if (!userExists) {
+            throw new Error('You entered incorrect login or password')
+        }
+
         const match = await bcrypt.compare(req.body.password, userExists.password);
 
         if (match) {
-            // res.send(createToken());
 
-            //login
-             res.status(200).send("login successful");
+            console.log('Constants', Constants);    
+            // create JWT-token
+            jwt.sign({ id : userExists._id }, Constants.privateKey, function(err, token) {
+                // console.log(err, token);
+                res.status(200).send({
+                    token,
+                    user: userExists._id
+                });
+            });
+
+        }
+        else if (!match ) {
+            throw new Error('You entered incorrect login or password')
         }
 
-        else {
-            res.status(200).send("login UNsuccessful");
-        }
+
+
 
     } catch (err) {
         res.status(500).send({ message: err.message })
