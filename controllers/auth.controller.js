@@ -69,18 +69,22 @@ const login = async (req, res) => {
 
         if (match) {
 
-            console.log('Constants', Constants);    
+            // console.log('Constants', Constants);    
             // create JWT-token
-            jwt.sign({ id : userExists._id }, Constants.privateKey, function(err, token) {
+            jwt.sign({ id: userExists._id }, Constants.privateKey, function (err, token) {
                 // console.log(err, token);
+                console.log("Login successful");
                 res.status(200).send({
-                    token,
-                    user: userExists._id
+                    token: token,
+                    userId: userExists._id
                 });
             });
 
+
+
+
         }
-        else if (!match ) {
+        else if (!match) {
             throw new Error('You entered incorrect login or password')
         }
 
@@ -137,6 +141,7 @@ const register = async (req, res) => {
                     ...req.body,
                     password: hash
                 }
+
                 const result = await userService.createUser(param);
                 res.status(200).send(result);
             });
@@ -152,8 +157,26 @@ const register = async (req, res) => {
     // });
 }
 
+const checkLogin = (req, res) => {
+    const token = req.headers.authorization;
+    console.log(req.headers.authorization);
+    if (!token) throw new Error('Token not found')
+
+
+    else {
+        // jwt.verify
+        var decoded = jwt.verify(token, Constants.privateKey);
+        console.log(decoded.id) // bar
+        res.status(200).send(decoded.id);
+
+    }
+
+
+}
+
 module.exports = {
     login,
     register,
-    CheckAllUsers
+    CheckAllUsers,
+    checkLogin
 }

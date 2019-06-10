@@ -5,6 +5,6 @@ var router = express.Router();
 router.post('/register', AuthController.register);
 router.get('/users', AuthController.CheckAllUsers);
 router.post('/login', AuthController.login);
-
+router.get('/checkLogin', AuthController.checkLogin)
 
 module.exports = router;
