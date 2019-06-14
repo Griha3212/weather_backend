@@ -29,6 +29,8 @@ const createToken = async () => {
 
 
 
+
+
 // const login =  async (email, password, callback) => {
 //     User.findOne({ email: email })
 //     .exec(function (err, user) {
@@ -158,20 +160,7 @@ const register = async (req, res) => {
 }
 
 const checkLogin = (req, res) => {
-    const token = req.headers.authorization;
-    console.log(req.headers.authorization);
-    if (!token) throw new Error('Token not found')
-
-
-    else {
-        // jwt.verify
-        var decoded = jwt.verify(token, Constants.privateKey);
-        console.log(decoded.id) // bar
-        res.status(200).send(decoded.id);
-
-    }
-
-
+    res.status(200).send(req.user.id);
 }
 
 module.exports = {

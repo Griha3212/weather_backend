@@ -5,6 +5,8 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
+var authMiddleware = require('./middlewares/auth.middleware');
+
 
 
 // var session = require('express-session');
@@ -20,22 +22,16 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-//подключение сессий
-// app.use(session({
-//   secret: 'work hard',
-//   resave: true,
-//   saveUninitialized: false
-// }));
 
-//Подключение
-// // models
-// require('./models/user.model');
 
 
 // routes
+var authRoutes = require('./routes/auth.routes');
 var apiRoutes = require('./routes/api.routes');
 
-app.use('/api', apiRoutes);
+app.use('/auth', authRoutes);
+
+app.use('/api', authMiddleware.checkToken, apiRoutes);
 
 
 
@@ -53,10 +49,6 @@ app.use('/api', apiRoutes);
 
 
 //Примеры запросов
-
-
-
-
 
 
 
