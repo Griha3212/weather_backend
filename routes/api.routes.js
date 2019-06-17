@@ -6,5 +6,16 @@ var router = express.Router();
 router.get('/checkLogin', AuthController.checkLogin);
 
 // GET /api/history
-router.get('/history', HistoryController.getUserInfo);
+router.get('/history', HistoryController.getHistoryList);
+router.get('/history/:id', HistoryController.getHistoryElement);
+
+router.post('/history', HistoryController.createHistory);
+
 module.exports = router;
+
+
+// GET             /history - get list
+// GET             /history/:id - get single history element
+// POST            /history - create new history
+// PUT/PATH/POST   /history/:id - edit history
+// DELETE          /history/:id - delete history

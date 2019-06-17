@@ -1,5 +1,7 @@
 // req.user.id
 const User = require('../models/user.model');
+const History = require('../models/history.model');
+const historyService = require('../services/history.service');
 
 const getUserInfo = (req, res) => {
     // const userId = req.user.id;
@@ -12,6 +14,73 @@ const getUserInfo = (req, res) => {
         res.status(200).send(users)
     });
 }
+
+
+const getHistoryList = (req, res) => {
+
+    History.find({userId: req.user.id}, function (err, histories) {
+        if (err) return res.status(500).send({
+            message: err.message,
+        })
+        // saved!
+        res.status(200).send(histories)
+    });
+}
+
+const getHistoryElement = (req, res) => {
+    // const userId = req.user.id;
+    console.log('req.params', req.params)
+
+    History.findById(req.params.id, function (err, histories) {
+        if (err) return res.status(500).send({
+            message: err.message,
+        })
+        // saved!
+        res.status(200).send(histories)
+    });
+}
+
+
+// getHistoryList
+// getHistoryElement
+
+
+
+const createHistory = async (req, res) => {
+    console.log('register', req.body)
+    try {
+        const inputData = {
+            ...req.body,
+            userId: req.user.id
+        }
+        const result = await historyService.addHistoryData(inputData);
+        res.status(200).send(result);
+
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+
+    // res.status(200).send({
+    //     message: 'register'
+    // });
+}
+
+
+
+
+
+
+// const writeHistoryData = (req, res) => {
+//     // const userId = req.user.id;
+
+//     History.create(req.user.id, function (err, users) {
+//         if (err) return res.status(500).send({
+//             message: 'Error'
+//         })
+//         // saved!
+//         res.status(200).send(users)
+//     });
+// }
 
 
 // app.get('/cats/:_id', function (req, res) {
@@ -44,4 +113,7 @@ const getUserInfo = (req, res) => {
 
 module.exports = {
     getUserInfo,
+    createHistory,
+    getHistoryList,
+    getHistoryElement
 }
