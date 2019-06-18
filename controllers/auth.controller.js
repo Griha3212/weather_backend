@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
+const User = require('../models/user.model');
+
 const Constants = require('../config/constants')
 //функции логина и регистрации контроллера
 
@@ -163,9 +165,22 @@ const checkLogin = (req, res) => {
     res.status(200).send(req.user.id);
 }
 
+const getUserInfo = (req, res) => {
+    // const userId = req.user.id;
+
+    User.findById(req.user.id, function (err, users) {
+        if (err) return res.status(500).send({
+            message: 'Error'
+        })
+        // saved!
+        res.status(200).send(users)
+    });
+}
+
 module.exports = {
     login,
     register,
     CheckAllUsers,
-    checkLogin
+    checkLogin,
+    getUserInfo
 }

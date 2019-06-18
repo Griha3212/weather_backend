@@ -10,6 +10,7 @@ router.get('/history', HistoryController.getHistoryList);
 router.get('/history/:id', HistoryController.getHistoryElement);
 
 router.post('/history', HistoryController.createHistory);
+router.get('/profile/', AuthController.getUserInfo);
 
 module.exports = router;
 

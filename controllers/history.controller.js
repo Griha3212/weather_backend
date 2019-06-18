@@ -3,22 +3,12 @@ const User = require('../models/user.model');
 const History = require('../models/history.model');
 const historyService = require('../services/history.service');
 
-const getUserInfo = (req, res) => {
-    // const userId = req.user.id;
 
-    User.findById(req.user.id, function (err, users) {
-        if (err) return res.status(500).send({
-            message: 'Error'
-        })
-        // saved!
-        res.status(200).send(users)
-    });
-}
 
 
 const getHistoryList = (req, res) => {
 
-    History.find({userId: req.user.id}, function (err, histories) {
+    History.find({userId: req.user.id}, {weatherData: false}, function (err, histories) {
         if (err) return res.status(500).send({
             message: err.message,
         })
@@ -112,7 +102,6 @@ const createHistory = async (req, res) => {
 
 
 module.exports = {
-    getUserInfo,
     createHistory,
     getHistoryList,
     getHistoryElement
